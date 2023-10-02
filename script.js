@@ -370,3 +370,22 @@ async function getTodoAsync(url) {
 
 getTodoAsync(url);
 console.log('D!-2'); // first this would be printed and then todoResult!
+
+// with returning Value
+const urlA = 'https://api.adviceslip.com/advice/3';
+async function getTodoWithReturnAsync(url) {
+  try {
+    const todoResultB = await fetch(url);
+    const response = await todoResultB.json();
+    return response.slip.advice;
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+// note to have return value we have put it again in async function or IIFE , or in a module!
+// most often we don't return like this and pass to state!
+
+(async function () {
+  const res = await getTodoWithReturnAsync(urlA);
+  console.log(res);
+})();
