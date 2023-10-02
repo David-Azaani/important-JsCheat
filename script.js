@@ -305,5 +305,68 @@ const pagesAllBooks = books.reduce((acc, book) => acc + book.pages, 0);
 console.log(pagesAllBooks);
 
 // 12-The Array sort Method
+// Mute the array!
+// ascending way a-b
+// descending way b-a
+const numbersA = [1, 6, 9, 6, 5, 8, 7, 4, 1, 5];
+const numbersB = [1, 6, 9, 6, 5, 8, 7, 4, 1, 5];
+const sortDsc = numbersA.sort((a, b) => b - a); // the source will be sorted!
+const sortAsc = numbersB.sort((a, b) => a - b);
+const sortAscCopy = numbersB.slice().sort((a, b) => a - b);
+console.log(sortAsc);
+console.log(sortDsc);
 
-// 13-Working With Immutable Arrays
+// best way is to copy from array and then sort!
+// .slice() >> bring a new copy
+
+const sortedByPagesDsc = books.slice().sort((a, b) => b.pages - a.pages);
+console.log(sortedByPagesDsc);
+
+// 13-Working With Immutable Arrays : to add elements, how to delete elements,and how to update elements of an array without changing the original one.
+const newBook = {
+  id: 6,
+  title: 'Whatever you want!',
+  author: 'whoever you know',
+};
+// add a book : ...spread
+
+const booksAfterAdd = [...books, newBook];
+console.log(booksAfterAdd);
+
+//  delete a book obj from an array : filter()
+
+const booksAfterDelete = booksAfterAdd.filter((book) => book.id !== 3);
+console.log(booksAfterDelete);
+
+// update a book obj in an array : map() +  ....spread
+
+const booksAfterUpdate = booksAfterDelete.map((book) =>
+  book.id === 1 ? { ...book, pages: 200000000 } : book
+);
+
+console.log(booksAfterUpdate);
+
+// 14- Asynchronous JavaScript Promises
+
+const todoResultA = fetch('https://api.adviceslip.com/advice/1')
+  .then((response) => response.json()) // to handle full filled!
+  .then((data) => console.log(data)) //.then((data) => console.log(data)) // or
+  .catch((err) => err.message); // to handle full rejected!
+
+console.log('D!-1'); // first this would be printed and then todoResult!
+
+// 15 - Asynchronous JavaScript AsyncAwait
+
+const url = 'https://api.adviceslip.com/advice/2';
+async function getTodoAsync(url) {
+  try {
+    const todoResultB = await fetch(url);
+    const response = await todoResultB.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+getTodoAsync(url);
+console.log('D!-2'); // first this would be printed and then todoResult!
