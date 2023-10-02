@@ -143,9 +143,9 @@ function getBook(id) {
   return data.find((d) => d.id === id);
 }
 
-// Destructuring for {exact name of prop,exact name of prop} and [whateverName,whateverName]
+// 1-Destructuring for {exact name of prop,exact name of prop} and [whateverName,whateverName]
 const books = getBooks();
-const book = getBook(2);
+const book = getBook(1);
 console.log(book);
 
 const { title, author, pages, genres, publicationDate } = book;
@@ -160,7 +160,7 @@ console.log(a);
 console.log(b);
 console.log(...c);
 
-//Rest Spread Operator {},[]
+//2-Rest Spread Operator {},[]
 // line 157 rest operator , rest should be the last
 // note const x = [genres,y] = > [[genres],[x]] notGood
 
@@ -174,14 +174,14 @@ console.log(newUpdatedBookA);
 const newBookUpdatedB = { ...book, isAdult: false, pages: 10000 }; // add(isAdult) and update existing(pages) : for update sth ... must be first because .. contains all obj and the same obj overwrite it!
 console.log(newBookUpdatedB);
 
-//Template Literals
+//3-Template Literals
 
 const summary = `${title} and ${author} & ${pages} & ${
   publicationDate.split('-')[0] // work ins here with methods and also look at split method
 }`;
 console.log(summary);
 
-//Ternaries Instead of ifelse Statements.
+//4-Ternaries Instead of ifelse Statements.
 
 // () ? '' : ''
 // it returns a result
@@ -189,7 +189,7 @@ console.log(summary);
 const pageResult = pages > 1000 ? 'WOw ☠️' : '☕';
 console.log(pageResult);
 
-// Arrow Functions
+// 5-Arrow Functions
 
 // const myFuc = a => a+1
 // const myFuc = (a,b) => a+b
@@ -203,4 +203,107 @@ console.log(pageResult);
 const getYear = (strDate) => strDate.split('-')[0];
 console.log(getYear(publicationDate));
 
-// ShortCircuiting And Logical Operators
+// 6-ShortCircuiting And Logical Operators && ||
+//short circuiting in logical operators means that, in certain conditions,the operator will immediately return the first value and not even look at the second value.
+
+// &&  > like if
+//this operator short circuits when they first operate.So when the first value is false and then will immediately return that first value.
+
+console.log(true && 'Some Strings'); // Some Strings
+console.log(false && 'Some Strings'); // false
+
+// falsy : 0,'',null, undefined
+console.log('string 1' && 'string 2'); // string 2
+
+// || : works unlike && > using for default value
+console.log(true || 'string 1'); // true
+console.log(false || 'string 1'); // string 1
+
+const spanishTranslation = book.translations.spanish || 'not Translated';
+console.log(spanishTranslation); // not Translated
+
+// attention
+console.log(book.reviews.librarything.reviewsCount);
+const countWrong = book.reviews.librarything.reviewsCount || 'No data';
+console.log(countWrong); // no data
+
+// 7-nullish operator : when the first value is null or undefined,
+const count = book.reviews.librarything.reviewsCount ?? 'No data';
+console.log(count); // 0
+
+// 8-Optional Chaining
+// ?. => if before exists then continue (not null  or undefined)
+// in this scenario we can use  both ? and ??  => null ?? works otherwise everything is good!
+function getTotalReviewCount(book) {
+  const goodreads = book.reviews.goodreads.reviewsCount;
+  const librarything = book.reviews.librarything?.reviewsCount ?? 0;
+  return goodreads + librarything;
+}
+
+console.log(getTotalReviewCount(book));
+
+// 9-The Array map Method
+// functional array methods in JavaScript because this method does not mutate the original array but do instead return a new array based on the original one.
+
+const newArr = [1, 2, 3, 4, 5].map((el) => el * 2);
+console.log(newArr); // [2,4,6,8,10]
+
+const allTitles = books.map((book) => book.title);
+console.log(allTitles);
+
+const allAuthors = books.map((book) => book?.author);
+//const allAuthors = books.map((book) => book?.author ?? 'Whatever');
+console.log(allAuthors);
+
+// if we wanted to return an obj and as result we have an array of obj
+const essentialInfo = books.map((book) => {
+  return {
+    // this is fr having obj
+    title: book.title,
+    author: book.author,
+    pages: book.pages ?? 0,
+    reviewsCount: getTotalReviewCount(book),
+  };
+});
+// or you can remove return and instead ()
+const essentialInfoB = books.map((book) => ({
+  title: book.title,
+  author: book.author,
+  pages: book.pages ?? 0,
+}));
+console.log(essentialInfo);
+console.log(essentialInfoB);
+
+// 10-The Array filter Method
+// functional array methods in JavaScript because this method does not mutate the original array but do instead return a new array based on the original one.
+// to filter out some elements of the array based on a condition.
+
+const longBooks = books.filter((book) => book.pages > 500);
+console.log(longBooks);
+// filter in filter! : chain filter
+const longBooksWithMovie = books
+  .filter((book) => book.pages > 500)
+  .filter((book) => book.hasMovieAdaptation);
+console.log(longBooksWithMovie);
+// or const longBooksWithMovie = longBooks.filter(book=>book.hasMovieAdaptation);
+// --
+
+const adventureBooks = books
+  .filter(
+    (book) => book.genres.includes('adventure') // include always is true of false!
+  )
+  .map((book) => book.title);
+console.log(adventureBooks);
+
+// 11-The Array reduce Method
+// functional array methods in JavaScript because this method does not mutate the original array but do instead return a new array based on the original one.
+
+// const pagesAllBooks = books.reduce((acc, book) => {
+// return acc + book.pages;
+// }, 0);
+const pagesAllBooks = books.reduce((acc, book) => acc + book.pages, 0);
+console.log(pagesAllBooks);
+
+// 12-The Array sort Method
+
+// 13-Working With Immutable Arrays
