@@ -382,7 +382,7 @@ async function getTodoWithReturnAsync(url) {
     console.log(error.message);
   }
 }
-// note to have return value we have put it again in async function or IIFE , or in a module!
+// note to have return value we have put it again in async function or IIFE , or in a module! or use then()
 // most often we don't return like this and pass to state!
 
 (async function () {
